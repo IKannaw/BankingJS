@@ -1,7 +1,7 @@
 const bankingServices = {
     "Cash out": 1,
     "Cash in": 2,
-    "Check Amount In Bank": 3
+    "Check Amount": 3
 }
 
 let userAccounts =
@@ -48,8 +48,8 @@ switch (sercive) {
     case bankingServices["Cash out"]:
          cashOut();
          break;
-    case bankingServices["Cash out"]:
-        console.log("cash out service")
+    case bankingServices["Check Amount"]:
+        checkAmount();
          break;
     default:
         console.log("Invalid Service");
@@ -99,7 +99,13 @@ function cashIn() {
 
 
 function checkAmount() {
-    
+    const useraccount = getUserAccountDetail();
+    if (useraccount) {
+        const userAccountDetail = userBankAccountDetails.find(u => u.userAccountId == useraccount.id);
+        console.table(userAccountDetail);
+    } else {
+        console.log("Invalid user account");
+    }
 }
 
 function getUserAccountDetail() {
