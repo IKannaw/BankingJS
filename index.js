@@ -43,10 +43,10 @@ let sercive = +prompt("Enter a service option")
 
 switch (sercive) {
     case bankingServices["Cash in"]:
-         cashOut();
+         cashIn();
         break;
     case bankingServices["Cash out"]:
-        console.log("cash out service");
+         cashOut();
          break;
     case bankingServices["Cash out"]:
         console.log("cash out service")
@@ -70,7 +70,6 @@ function cashOut() {
           if (index != -1) {
               const updatedBalance = userBalance.leftAmount - ammount;
               userBankAccountDetails[index]["leftAmount"] = updatedBalance;
-              console.log("update user account details", userBankAccountDetails);
           }
       } else {
           console.log("Not enough money")
@@ -82,7 +81,20 @@ function cashOut() {
 }
 
 function cashIn() {
-    
+    const useraccount = getUserAccountDetail();
+    if (useraccount) {
+        let amount = +prompt("Enter a amount");
+        if (amount > 0) {
+            const index = userBankAccountDetails.findIndex(u => u.userAccountId === useraccount.id);
+            if (index != -1) {
+                userBankAccountDetails[index]["leftAmount"] += amount;
+            }
+        } else {
+            console.log("Invalid ammount")
+        }
+    } else {
+        console.log("Invalid user account");
+     }
 }
 
 
