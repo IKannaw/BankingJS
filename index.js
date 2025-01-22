@@ -1,7 +1,8 @@
 const bankingServices = {
     "Cash out": 1,
     "Cash in": 2,
-    "Check Amount": 3
+    "Check Amount": 3,
+    "Transfer":4
 }
 
 let userAccounts =
@@ -33,6 +34,10 @@ let userBankAccountDetails = [
     {
         "userAccountId": 1,
          "leftAmount": 30000,
+    },
+    {
+        "userAccountId": 2,
+         "leftAmount": 20000,
     }
 ]
 
@@ -50,6 +55,9 @@ switch (sercive) {
          break;
     case bankingServices["Check Amount"]:
         checkAmount();
+        break;
+     case bankingServices["Transfer"]:
+        transfer();
          break;
     default:
         console.log("Invalid Service");
@@ -114,3 +122,34 @@ function getUserAccountDetail() {
     const userAccountDetails = userAccounts.find(u => u.password === password && u.phoneNo === phoneNo);
     return userAccountDetails;
 }
+
+
+function transfer() {
+    let phoneNo = prompt("Enter transfer phone number");
+    const recipientUserAccount = userAccounts.find(u => u.phoneNo === phoneNo);
+    if (recipientUserAccount) {
+        const trnasferAmount = +prompt("Enter amount");
+        const senderAccountDetails = getUserAccountDetail();
+        const senderAccountBalance = userBankAccountDetails.find(u => u.userAccountId == senderAccountDetails.id);
+
+        if (trnasferAmount > 0 && senderAccountBalance.leftAmount >= trnasferAmount)
+        {
+            const recipientAccountDetails = userBankAccountDetails.find(r => r.userAccountId == recipientUserAccount.id);
+            if (recipientAccountDetails) {
+                const recipientUserIndex = userBankAccountDetails.findIndex(r => r.userAccountId == recipientAccountDetails.userAccountId);
+                userBankAccountDetails[recipientUserIndex]["leftAmount"] += trnasferAmount;
+                const senderIndex = userBankAccountDetails.findIndex(s => s.userAccountId == senderAccountDetails.id);
+                userBankAccountDetails[senderIndex]['leftAmount'] -= trnasferAmount;
+                checkAmount();
+                checkAmount();
+            } else {
+                console.log("Recipient user acccount does not exist in bank")
+            }
+        } else {
+            console.log("Not enough money to transfer")
+        }
+    } else {
+        console.log("phone number does not exist")
+    }
+}
+
